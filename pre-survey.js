@@ -53,17 +53,19 @@ const questions = [
     },
     {
       question: "Rate how much you agree with the following statements:",
-      choices: [
-        "Strongly agree",
-        "Agree",
-        "Neither agree nor disagree",
-        "Disagree",
-        "Strongly disagree"
-      ],
       subquestions: [
-        "I am experienced in playing video games",
-        "I am experienced in playing action-based video games",
-        "I am experienced in playing PC (personal computer) games"
+        {
+          question: "I am experienced in playing video games",
+          options: ["Strongly agree", "Agree", "Neither agree nor disagree", "Disagree", "Strongly disagree"]
+        },
+        {
+          question: "I am experienced in playing action-based video games",
+          options: ["Strongly agree", "Agree", "Neither agree nor disagree", "Disagree", "Strongly disagree"]
+        },
+        {
+          question: "I am experienced in playing PC (personal computer) games",
+          options: ["Strongly agree", "Agree", "Neither agree nor disagree", "Disagree", "Strongly disagree"]
+        }
       ]
     }
 ];
@@ -79,20 +81,43 @@ function displayQuestion() {
         <div id="choices"></div>
     `;
     const choicesDiv = document.getElementById('choices');
-    currentQuestion.choices.forEach(choice => {
-        const choiceBtn = document.createElement('button');
-        choiceBtn.textContent = choice;
-        choiceBtn.classList.add('btn');
-        choiceBtn.addEventListener('click', () => selectChoice(choice));
-        choicesDiv.appendChild(choiceBtn);
-    });
+
+    // Check if the current question has subquestions
+    if (currentQuestion.subquestions) {
+        // Loop through each subquestion
+        currentQuestion.subquestions.forEach(subquestion => {
+            const subquestionDiv = document.createElement('div');
+            subquestionDiv.innerHTML = `
+                <h3>${subquestion.question}</h3>
+                <div id="subquestion-choices-${subquestion.question.replace(/\s/g, '-')}"></div>
+            `;
+            choicesDiv.appendChild(subquestionDiv);
+
+            const subquestionChoicesDiv = document.getElementById(`subquestion-choices-${subquestion.question.replace(/\s/g, '-')}`);
+            subquestion.options.forEach(option => {
+                const optionBtn = document.createElement('button');
+                optionBtn.textContent = option;
+                optionBtn.classList.add('btn');
+                optionBtn.addEventListener('click', () => selectChoice(option));
+                subquestionChoicesDiv.appendChild(optionBtn);
+            });
+        });
+    } else {
+        // If there are no subquestions, handle the choices
+        currentQuestion.choices.forEach(choice => {
+            const choiceBtn = document.createElement('button');
+            choiceBtn.textContent = choice;
+            choiceBtn.classList.add('btn');
+            choiceBtn.addEventListener('click', () => selectChoice(choice));
+            choicesDiv.appendChild(choiceBtn);
+        });
+    }
 }
   
 // Function to handle user choice selection
 function selectChoice(choice) {
-    // You can do something with the user's choice here
     console.log(`Selected choice: ${choice}`);
-    // Move to the next question
+    // Increment to the next question
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
         displayQuestion();
