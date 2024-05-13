@@ -43,6 +43,41 @@ nav ul li a {
     max-width: 800px;
 }
 
+#bottom-nav {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    border: 2px solid #BC6C25;
+    position: fixed;
+    bottom: 17.5px;
+    left: 96%;
+    transform: translateX(-50%);
+    background-color: #C2A83E;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+#bottom-nav::after {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-top: 5px solid #fff;
+    border-right: 5px solid #fff;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 50%;
+    left: 61%;
+    margin-top: -13px;
+    margin-left: -25px;
+}
+
+#bottom-nav:hover {
+    background-color: #BC6C25;
+}
+  
+  
 @media only screen and (max-width: 768px) {
 
 }
