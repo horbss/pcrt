@@ -32,10 +32,12 @@ nav ul li a {
 }
 
 .content {
-    align-items: center;
-    width: 50%;
+    background-color: white;
+    border: 2px solid #333;
+    display: flex;
+    flex-direction: column;
     margin: 20px;
     padding: 20px;
-    border: 2px solid #333;
-    background-color: white;
+    place-content: center;
+    width: 50%;
 }
