@@ -43,6 +43,17 @@ nav ul li a {
     max-width: 800px;
 }
 
+#choices {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+#choices button {
+    flex: 1 1 auto;
+}
+
 #bottom-nav {
     display: inline-block;
     width: 80px;
