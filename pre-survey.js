@@ -129,7 +129,7 @@ function selectChoice(question, choice) {
     });
 
     if (allQuestionsAnswered) {
-        // Redirect to the next page or display a thank you message
+        // Display a thank you message
         questionDiv.innerHTML = "<h2>Thank you for completing the questionnaire!</h2>";
     } else {
         // Increment to the next question
