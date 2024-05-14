@@ -1,4 +1,3 @@
-// script.js
 const questions = [
     {
       question: "Do you have access to a stable internet connection?",

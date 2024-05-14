@@ -43,6 +43,17 @@ nav ul li a {
     max-width: 800px;
 }
 
+#choices {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+#choices button {
+    flex: 1 1 auto;
+}
+
 #bottom-nav {
     display: inline-block;
     width: 80px;
@@ -50,7 +61,7 @@ nav ul li a {
     border: 2px solid #BC6C25;
     position: fixed;
     bottom: 17.5px;
-    left: 96%;
+    left: 90%;
     transform: translateX(-50%);
     background-color: #C2A83E;
     border-radius: 50%;
