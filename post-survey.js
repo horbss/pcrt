@@ -7,19 +7,44 @@ const questions = [
                 subsubquestions: [
                     {
                         question: "I felt that [Mechanic 1] was an enjoyable mechanic.",
-                        options: ["Strongly agree", "Agree", "Neither agree nor disagree", "Disagree", "Strongly disagree"]
+                        options: [
+                            "Strongly agree", 
+                            "Agree", 
+                            "Neither agree nor disagree", 
+                            "Disagree", 
+                            "Strongly disagree"
+                        ]
                     },
                     {
                         question: "I felt that [Mechanic 1] was a mechanic that was easy to understand.",
-                        options: ["Strongly agree", "Agree", "Neither agree nor disagree", "Disagree", "Strongly disagree"]
+                        options: [
+                            "Strongly agree", 
+                            "Agree", 
+                            "Neither agree nor disagree", 
+                            "Disagree", 
+                            "Strongly disagree"
+                        ]
                     },
                     {
                         question: "I felt that [Mechanic 1] was a mechanic that was easy to use.",
-                        options: ["Strongly agree", "Agree", "Neither agree nor disagree", "Disagree", "Strongly disagree"]
+                        options: [
+                            "Strongly agree", 
+                            "Agree", 
+                            "Neither agree nor disagree", 
+                            "Disagree", 
+                            "Strongly disagree"
+                        ]
                     },
                     {
                         question: "I felt that [Mechanic 1] was a mechanic that I had never seen in any other video game before.",
-                        options: ["Strongly agree", "Agree", "Neither agree nor disagree", "Disagree", "Strongly disagree", "N/A - I have never played a video game before"]
+                        options: [
+                            "Strongly agree", 
+                            "Agree", 
+                            "Neither agree nor disagree", 
+                            "Disagree", 
+                            "Strongly disagree", 
+                            "N/A - I have never played a video game before"
+                        ]
                     }
                 ]
             },
@@ -70,8 +95,14 @@ const questions = [
                 ]
             },
             {
-                question: "How strongly do you agree with the following statement: \"I felt that it was easy to switch between [Mechanic 1] and [Mechanic 2].\"",
-                options: ["Strongly agree", "Agree", "Neither agree nor disagree", "Disagree", "Strongly disagree"]
+                question: "How strongly do you agree with the following statement: I felt that it was easy to switch between [Mechanic 1] and [Mechanic 2].",
+                options: [
+                    "Strongly agree", 
+                    "Agree", 
+                    "Neither agree nor disagree", 
+                    "Disagree", 
+                    "Strongly disagree"
+                ]
             }
         ]
     }
@@ -79,6 +110,7 @@ const questions = [
 
 const questionDiv = document.getElementById('question');
 let currentQuestionIndex = 0;
+const userAnswers = {};
 
 // Function to display current question
 function displayQuestion() {
@@ -117,7 +149,7 @@ function displayQuestion() {
                         const optionBtn = document.createElement('button');
                         optionBtn.textContent = option;
                         optionBtn.classList.add('btn');
-                        optionBtn.addEventListener('click', () => selectChoice(option));
+                        optionBtn.addEventListener('click', () => selectChoice(subsubquestion.question, option));
                         subsubquestionChoicesDiv.appendChild(optionBtn);
                     });
                 });
@@ -127,7 +159,7 @@ function displayQuestion() {
                     const optionBtn = document.createElement('button');
                     optionBtn.textContent = option;
                     optionBtn.classList.add('btn');
-                    optionBtn.addEventListener('click', () => selectChoice(option));
+                    optionBtn.addEventListener('click', () => selectChoice(subquestion.question, option));
                     subquestionChoicesDiv.appendChild(optionBtn);
                 });
             }
@@ -136,17 +168,46 @@ function displayQuestion() {
 }
 
 // Function to handle user choice selection
-function selectChoice(choice) {
-    console.log(`Selected choice: ${choice}`);
-    // Increment to the next question
-    currentQuestionIndex++;
-    if (currentQuestionIndex < questions.length) {
-        displayQuestion();
-    } else {
-        // Display a thank you message or redirect to another page when all questions are answered
+function selectChoice(question, choice) {
+    // Save the user's answer
+    userAnswers[question] = choice;
+
+    // Check if all required questions have been answered
+    const allQuestionsAnswered = questions.every(question => {
+        if (question.subquestions) {
+            return question.subquestions.every(subquestion => {
+                if (subquestion.subsubquestions) {
+                    return subquestion.subsubquestions.every(subsubquestion => userAnswers[subsubquestion.question]);
+                } else {
+                    return userAnswers[subquestion.question];
+                }
+            });
+        } else {
+            return userAnswers[question.question];
+        }
+    });
+
+    if (allQuestionsAnswered) {
+        // Redirect to the next page or display a thank you message
         questionDiv.innerHTML = "<h2>Thank you for completing the questionnaire!</h2>";
+        // Redirect to the next page here
+    } else {
+        // Check if all subsubquestions of the current subquestion have been answered
+        const currentQuestion = questions[currentQuestionIndex];
+        const currentSubquestion = currentQuestion.subquestions.find(subquestion => {
+            if (subquestion.subsubquestions) {
+                return subquestion.subsubquestions.some(subsubquestion => !userAnswers[subsubquestion.question]);
+            }
+            return false;
+        });
+
+        if (!currentSubquestion) {
+            // All subsubquestions of the current subquestion have been answered, proceed to the next subquestion
+            currentQuestionIndex++;
+            displayQuestion();
+        }
     }
 }
-  
+
 // Display the first question when the page loads
- window.onload = displayQuestion();
+window.onload = displayQuestion();
