@@ -68,10 +68,11 @@ const questions = [
       ]
     }
 ];
-  
+
 const questionDiv = document.getElementById('question');
 let currentQuestionIndex = 0;
-  
+const userAnswers = {};
+
 // Function to display current question
 function displayQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
@@ -97,7 +98,7 @@ function displayQuestion() {
                 const optionBtn = document.createElement('button');
                 optionBtn.textContent = option;
                 optionBtn.classList.add('btn');
-                optionBtn.addEventListener('click', () => selectChoice(option));
+                optionBtn.addEventListener('click', () => selectChoice(subquestion.question, option));
                 subquestionChoicesDiv.appendChild(optionBtn);
             });
         });
@@ -107,25 +108,37 @@ function displayQuestion() {
             const choiceBtn = document.createElement('button');
             choiceBtn.textContent = choice;
             choiceBtn.classList.add('btn');
-            choiceBtn.addEventListener('click', () => selectChoice(choice));
+            choiceBtn.addEventListener('click', () => selectChoice(currentQuestion.question, choice));
             choicesDiv.appendChild(choiceBtn);
         });
     }
 }
-  
+
 // Function to handle user choice selection
-function selectChoice(choice) {
-    console.log(`Selected choice: ${choice}`);
-    // Increment to the next question
-    currentQuestionIndex++;
-    if (currentQuestionIndex < questions.length) {
-        displayQuestion();
-    } else {
-        // Display a thank you message or redirect to another page when all questions are answered
+function selectChoice(question, choice) {
+    // Save the user's answer
+    userAnswers[question] = choice;
+
+    // Check if all required questions have been answered
+    const allQuestionsAnswered = questions.every(question => {
+        if (question.subquestions) {
+            return question.subquestions.every(subquestion => userAnswers[subquestion.question]);
+        } else {
+            return userAnswers[question.question];
+        }
+    });
+
+    if (allQuestionsAnswered) {
+        // Display a thank you message
         questionDiv.innerHTML = "<h2>Thank you for completing the questionnaire!</h2>";
+    } else {
+        // Increment to the next question
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            displayQuestion();
+        }
     }
 }
-  
+
 // Display the first question when the page loads
- window.onload = displayQuestion();
-  
+window.onload = displayQuestion();
