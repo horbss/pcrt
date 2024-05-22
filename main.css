@@ -33,18 +33,29 @@ nav ul li a {
 }
 
 .content {
-    background-color: #F1F7ED;
+    background-color: white;
     border: 2px solid #333;
     display: flex;
     flex-direction: column;
     margin: 20px auto;
     padding: 20px;
     place-content: center;
-    height: 700px;
-    width: 960px;
+    width: 50%;
     max-width: 1060px;
 }
 
+.game-content{
+    background-color: white;
+    border: 2px solid #333;
+    display: flex;
+    flex-direction: column;
+    margin: 20px auto;
+    padding: 20px;
+    place-content: center;
+    width: 960px;
+    height: 700px;
+    max-width: 1060px;
+}
 #choices {
     display: flex;
     gap: 10px;
