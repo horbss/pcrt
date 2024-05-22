@@ -50,13 +50,14 @@
         }
         updateBannerVisibility();
       }
-      //adding a comment so i can push this stupid shit
-      var loaderUrl =  "/Build.loader.js";
+
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/Build.loader.js";
       var config = {
         arguments: [],
-        dataUrl:  "/Build.data.gz",
-        frameworkUrl:   "/Build.framework.js.gz",
-        codeUrl:  "/Build.wasm.gz",
+        dataUrl: buildUrl + "/Build.data.gz",
+        frameworkUrl: buildUrl + "/Build.framework.js.gz",
+        codeUrl: buildUrl + "/Build.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "PlayConditioning",
